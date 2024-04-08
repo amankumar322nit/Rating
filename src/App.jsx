@@ -1,33 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [hoverStar,setHoverStar]=useState(null);
+  const [stars,setStars]=useState(0);
+  const [totalStar,setTotalStar]=useState(5);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    {[...Array(totalStar)].map((star,i)=>{
+      const currentStar=i+1;
+      return(
+        <label key={currentStar}>
+        <input type="radio" name="rating"
+              style={{display:"none"}}
+              value={currentStar  } onChange={()=>setStars(currentStar)}/>
+        <span
+              className="star"
+              style={{
+                color:  
+                currentStar  <= (hoverStar || stars) ? "#ffc107" : "#e4e5e9",
+              }}
+              onMouseEnter={() => setHoverStar(currentStar)}
+              onMouseLeave={() => setHoverStar(null)}
+            >
+            &#x2605;
+            </span>
+        </label>
+      )
+    })}
+      <p>
+        Current {stars}
+        
       </p>
+      <p>
+      HowerStar{hoverStar}
+      </p>
+      <input value={totalStar} type="number" onChange={(e)=>setTotalStar(parseInt(e.target.value))} min={1}/>
     </>
   )
 }
